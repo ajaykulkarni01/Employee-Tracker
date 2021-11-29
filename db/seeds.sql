@@ -9,37 +9,60 @@ VALUES
 (5, "Information Technology");
 
 INSERT INTO role (id, title, salary, department_id)
-VALUES
+VALUES 
 (1, "Sales Associate", 60000, 1),
-(2, "Sales Manager", 100000, 1),
-(3, "Content Creator", 50000, 2),
-(4, "Marketing Manager", 250000, 2),
-(5, "Product Developer", 175000, 3),
-(6, "Chief Science Officer", 275000, 3),
-(7, "Accountant", 100000, 4),
-(8, "Chief Finance Officer", 400000, 4),
-(9, "Software Engineer", 90000, 5),
-(10, "VP of Technology", 390000, 5);
+(2, "Sales Manager", 80000, 1),
+(3, "Content Creator", 65000, 2),
+(4, "Marketing Manager", 90000, 2),
+(5, "Product Developer", 75000, 3),
+(6, "Chief Science Manager", 100000, 3),
+(7, "Accountant", 62000, 4),
+(8, "Chief Finance Manager", 120000, 4),
+(9, "Software Engineer", 80000, 5),
+(10, "Technology Manager", 115000, 5),
+(11, "Managing Director", 150000, 5);
 
 INSERT INTO employee (id, first_name, last_name, role_id, manager_id)
-VALUES
-(1, "John", "Doe", 1, null),
-(2, "Ryan", "Reynolds", 3, null),
-(3, "Joshua", "Small", 5, null),
-(4, "Maggie", "Sampson", 2, 1),
-(5, "George", "Clooney", 4, 1),
-(6, "James", "Brown", 6, 1),
-(7, "Tom", "Allen", 8, 2),
-(8, "Sebatian", "Arrazola", 10, 2),
-(9, "Jimena", "Alvarez", 1, 2),
-(10, "Maria", "Pulido", 3, 3),
-(11, "Guillermo", "Arrazola", 5, 3),
-(12, "Gaby", "Arrazola", 7, 3),
-(13, "David", "Arrazola", 9, 4),
-(14, "Nock", "Arrazola", 2, 4),
-(15, "Nill", "Armstrong", 4, 4),
-(16, "Jully", "Robe", 6, 5),
-(17, "Cindy", "Heathcote", 8, 5),
-(18, "Thyrone", "Wilson", 10, 5);
+VALUES  
+(1, "Thyrone", "Wilson", 11, NULL),
+-- Sales Manager
+(2, "Brigitte", "Sloot", 2, 1),
+-- Marketing Manager
+(3, "Maggie", "Sampson", 4, 1),
+-- Chief Science OfManagerficer
+(4, "Ryan", "Reynolds", 6, 1),
+-- Chief Finance Manager
+(5, "Sebatian", "Arrazola", 8, 1),
+-- Technology Manager
+(6, "Maria", "Pulido", 10, 1),
+-- staff
+(7, "Edward", "Doe", 1, 2),
+(8, "Joshua", "Small", 3, 3),
+(9, "George", "Clooney", 5, 4),
+(10, "Tom", "Allen", 7, 5),
+(11, "Jimena", "Alvarez", 9, 6),
+(12, "Maria", "Pulido", 5, 4),
+(13, "Guillermo", "Arrazola", 1, 2),
+(14, "Gaby", "Arrazola", 3, 3),
+(15, "David", "Arrazola", 5, 4),
+(16, "Nick", "Arrazola", 7, 5),
+(17, "Nill", "Armstrong", 9, 6),
+(18, "Jully", "Robe", 1, 2),
+(19, "Cindy", "Heathcote", 3, 3),
+(20, "Rohan", "Bush", 3, 3);
 
+-- view all departments
+-- select department.id AS "Department ID", department.name AS "Department Name" from department;
 
+-- view all roles
+-- select role.id AS "ID", role.title AS "Role Title", role.salary AS "Salary" FROM role;
+-- SELECT role.title AS JobTitle, role.id AS RoleID, role.department_id AS DepartmentID, role.salary AS AnnualSalary FROM role
+-- view all employees
+-- SELECT employee.id AS "Employee ID", 
+-- employee.first_name AS "First Name", 
+-- employee.last_name AS "Last Name", 
+-- employee.manager_id AS "Manager ID", 
+-- role.title AS "Job Title", 
+-- role.salary AS "Annual Salary", 
+-- department.name AS "Department Name", 
+-- concat(manager.first_name, " " , manager.last_name) AS "Manager Name" FROM employee JOIN role ON role.id = employee.role_id JOIN department ON department.id = role.department_id LEFT JOIN employee manager ON employee.manager_id = manager.id  ORDER BY employee.id
