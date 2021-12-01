@@ -23,7 +23,7 @@ inquirer_menu();
 function inquirer_menu() {
     inquirer.prompt([{
         type: "list",
-        message: "Welcome to the Express Employee-Trakcer application. Select the following options to plan and organize your work structure.",
+        message: "Welcome to the SQL Employee-Trakcer application. Select the following options to plan and organize your work structure.",
         name: "menu",
         choices: [
             "View All Departments",
@@ -44,9 +44,9 @@ function inquirer_menu() {
         if (data.menu === "Add A Department") return addDepartment();
         if (data.menu === "Add A Role") return addRole();
         if (data.menu === "Add An Employee") return addEmployee();
-        if (data.menu === "Update An Employee Role") return update();
+        if (data.menu === "Update An Employee Role") return updateEmpRole();
         if (data.menu === "Exit Application") return exit();
-        console.log("\ :: Application has stopped  ::\n");
+        console.log("\n :: Application has stopped  ::\n");
     })
 };
 
@@ -97,7 +97,7 @@ function addDepartment() {
             inquirer_menu();
         })
     })
-}
+};
 
 // Add new Role
 function addRole() {
@@ -134,5 +134,107 @@ function addRole() {
                 })
             })
         })
-}
+};
 
+
+//Add a new employee 
+function addEmployee() {
+    db.promise().query('SELECT role.id, role.title FROM role')
+        //using the role.id and role.title from role table to pull data. 
+        .then(([rows]) => {
+            
+            let currentRole = rows
+        
+            let roleChoices = currentRole.map(({ id, title }) => ({
+                name: title,
+                value: id
+            }));
+
+            db.promise().query('SELECT employee.id,  concat(employee.first_name," ",employee.last_name) AS Employee FROM employee')
+                .then(([rows]) => {
+                    let currentEmployee = rows
+                    let manager = currentEmployee.map(({ id, Employee }) => ({
+                        value: id,
+                        name: Employee
+                    }));
+
+
+                    inquirer.prompt([{
+                            type: "input",
+                            name: "first_name",
+                            message: "What is the first name of the employee?"
+                        },
+                        {
+                            type: "input",
+                            name: "last_name",
+                            message: "What is the last name of the employee?"
+                        },
+                        {
+                            type: "list",
+                            name: "role_id",
+                            message: "What role will this employee be part of?",
+                            choices: roleChoices
+                        },
+                        {
+                            type: "list",
+                            name: "manager_id",
+                            message: "Who will be this employees manager?",
+                            choices: manager
+                        }
+                    ]).then(answers => {
+                        db.query('INSERT INTO employee(first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?);', [answers.first_name, answers.last_name, answers.role_id, answers.manager_id], (err, results) => {
+                            // console.log(results)
+                            if (err) throw err;
+                            console.log("\n:: New employee has been added! ::\n")
+                            inquirer_menu();
+                        })
+                    })
+                })
+        })
+};
+
+//Update An Employee Role
+
+function updateEmpRole() {
+    // console.log("Updating employee information")
+    db.promise().query('SELECT employee.id, concat(employee.first_name, " ", employee.last_name) AS Employee from employee')
+        .then(([rows]) => {
+            // console.log(" employee updating", rows)
+            let whichEmployee = rows
+            let selectEmployee = whichEmployee.map(({ id, Employee }) => ({
+                value: id,
+                name: Employee
+            }));
+
+            //select the role.title for upate. 
+            db.promise().query('SELECT role.id, role.title AS "Role" from role')
+                .then(([rows]) => {
+                    let whatRole = rows
+                    let updatedRole = whatRole.map(({ id, Role }) => ({
+                        value: id,
+                        name: Role
+                    }));
+
+                    inquirer.prompt([{
+                            type: "list",
+                            name: "employee_pick",
+                            message: "Which employee would you like to update?",
+                            choices: selectEmployee
+                        },
+                        {
+                            type: "list",
+                            name: "new_role",
+                            message: "What role will this employee being changing too?",
+                            choices: updatedRole
+                        }
+                    ]).then(answers => {
+                        db.query('UPDATE employee SET role_id = ? WHERE employee.id = ?', [answers.new_role, answers.employee_pick], (err, results) => {
+                            if (err) throw err;
+                            console.log("\n:: The details of the employee has been updated! ::\n")
+                            inquirer_menu();
+                        })
+                    })
+                })
+        })
+};
+module.exports = inquirer_menu;
