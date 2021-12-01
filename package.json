@@ -19,6 +19,8 @@
   "homepage": "https://github.com/ajaykulkarni01/Employee-Tracker#readme",
   "dependencies": {
     "asciiart-logo": "^0.2.6",
+    "console.table": "^0.10.0",
+    "ctable": "^0.0.3",
     "dotenv": "^10.0.0",
     "figlet": "^1.5.2",
     "inquirer": "^8.2.0",
