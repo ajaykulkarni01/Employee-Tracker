@@ -55,8 +55,8 @@ VALUES
 -- select department.id AS "Department ID", department.name AS "Department Name" from department;
 
 -- view all roles
--- select role.id AS "ID", role.title AS "Role Title", role.salary AS "Salary" FROM role;
--- SELECT role.title AS JobTitle, role.id AS RoleID, role.department_id AS DepartmentID, role.salary AS AnnualSalary FROM role
+-- SELECT role.id AS "Role ID", role.title AS "Role", role.salary AS "AnnualSalary", department.name AS Department FROM role JOIN department ON department.id = role.department_id;
+
 -- view all employees
 -- SELECT employee.id AS "Employee ID", 
 -- employee.first_name AS "First Name", 
